@@ -54,7 +54,7 @@ console.log("📦 Updating marketplace.json...");
 const marketplace = {
   name: "n-skills",
   description:
-    "Curated plugin marketplace for AI agents - works with Claude Code, Codex, and openskills",
+    "Curated plugin marketplace for AI agents - works with CC, Codex, and openskills",
   owner: {
     name: "Numman Ali",
     email: "numman.ali@gmail.com",

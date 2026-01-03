@@ -1,6 +1,6 @@
 {
   "name": "n-skills",
-  "description": "Curated plugin marketplace for AI agents - works with Claude Code, Codex, and openskills",
+  "description": "Curated plugin marketplace for AI agents - works with CC, Codex, and openskills",
   "owner": {
     "name": "Numman Ali",
     "email": "numman.ali@gmail.com"
@@ -17,7 +17,7 @@
     },
     {
       "name": "gastown",
-      "description": "Multi-agent orchestrator for Claude Code. Use when user mentions gastown, gas town, gt commands, convoys, polecats, rigs, slinging work, multi-agent coordination, beads, hooks, the witness, the mayor, the refinery, or wants to run multiple AI agents on projects simultaneously.",
+      "description": "Multi-agent orchestrator. Use when user mentions gastown, gas town, gt commands, convoys, polecats, rigs, slinging work, multi-agent coordination, beads, hooks, the witness, the mayor, the refinery, or wants to run multiple AI agents on projects simultaneously.",
       "source": "./",
       "skills": [
         "./skills/tools/gastown"
