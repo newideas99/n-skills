@@ -138,6 +138,68 @@ This creates (rigs go directly under `~/gt/`, NOT inside `~/gt/rigs/`):
 - **SSH URLs supported**: `git@github.com:owner/repo.git`
 - **Local paths NOT supported**: Cannot use `/path/to/local/repo`
 
+### Post-Rig Verification (CRITICAL)
+
+**After every `gt rig add`, run these verification steps:**
+
+```bash
+# 1. Verify rig exists
+gt rig list
+
+# 2. Run BOTH health checks
+gt doctor
+bd doctor
+
+# 3. Check prefix routing is configured
+cat ~/gt/.beads/routes.jsonl  # Should have entry for new rig's prefix
+
+# 4. Verify patrol molecules exist
+bd list --prefix <rig-prefix>  # Should show Deacon, Witness, Refinery patrols
+
+# 5. Start the Refinery
+gt refinery start
+
+# 6. Verify Refinery is running
+gt refinery status
+```
+
+**BLOCKERS - Fix before slinging work:**
+
+| Check | Command | What to Look For |
+|-------|---------|------------------|
+| Prefix routing | `cat ~/gt/.beads/routes.jsonl` | Entry for rig's prefix |
+| Patrol molecules | `bd list --prefix <prefix>` | Deacon, Witness, Refinery patrols |
+| Refinery running | `gt refinery status` | Status: running |
+| No doctor errors | `gt doctor && bd doctor` | No critical errors |
+
+**If patrols are missing:**
+```bash
+gt doctor --fix
+```
+
+**If prefix routing is missing:**
+The rig's prefix needs to be added to routes.jsonl. Run `gt doctor --fix` or manually add:
+```json
+{"prefix":"<rig-prefix>-","path":"<rig-name>/mayor/rig"}
+```
+
+### Common Post-Rig Issues
+
+**Prefix mismatch errors when slinging:**
+```
+Error: prefix mismatch: database uses 'X' but you specified 'Y'
+```
+This means routes.jsonl doesn't have an entry for the prefix being used.
+Fix: `gt doctor --fix` or manually add the missing route.
+
+**Patrol molecules not active:**
+Patrols exist as templates but aren't "poured" (activated).
+Fix: `gt doctor --fix` should activate them.
+
+**Refinery not processing merges:**
+The Refinery needs to be started explicitly after rig creation.
+Fix: `gt refinery start`
+
 ## GitHub CLI Setup
 
 The GitHub CLI (`gh`) enables creating repositories from the command line.

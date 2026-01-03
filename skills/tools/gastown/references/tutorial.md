@@ -262,25 +262,47 @@ When user provides a GitHub URL:
 gt rig add <name> <github-url>
 ```
 
-Verify:
+**CRITICAL: Post-Rig Verification (DO ALL OF THESE):**
 ```bash
+# 1. Confirm rig exists
 gt rig list
-gt status
+
+# 2. Run BOTH health checks
+gt doctor
+bd doctor
+
+# 3. Check for prefix routing (look for errors)
+# If you see "prefix mismatch" or "routes.jsonl" errors → fix before continuing
+
+# 4. Start the Refinery (REQUIRED for merge pipeline)
+gt refinery start
+
+# 5. Verify Refinery is running
+gt refinery status
 ```
 
-### SHOW (after success):
+**BLOCKERS - Do not proceed if:**
+- `gt doctor` shows critical errors
+- `bd doctor` shows prefix mismatch errors
+- Refinery failed to start
+
+**If errors:** Run `gt doctor --fix` and retry.
+
+### SHOW (after verification passes):
 ```
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                                                                           ║
-║  ✓ RIG CREATED!                                                           ║
+║  ✓ RIG CREATED AND VERIFIED!                                              ║
 ║                                                                           ║
 ║  Project: <name>                                                          ║
 ║  Location: ~/gt/<name>/                                                   ║
 ║                                                                           ║
-║  The team is assembled:                                                   ║
-║  • Witness ready to watch workers                                         ║
-║  • Refinery ready to merge code                                           ║
-║  • Polecats bay ready for workers                                         ║
+║  Verification complete:                                                   ║
+║  • gt doctor: ✓ passed                                                    ║
+║  • bd doctor: ✓ passed                                                    ║
+║  • Refinery: ✓ running                                                    ║
+║                                                                           ║
+║  The team is ready to work.                                               ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 ```

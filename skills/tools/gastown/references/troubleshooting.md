@@ -12,6 +12,32 @@ When the user reports a problem or something seems broken:
 
 The user never sees raw error messages or runs commands themselves.
 
+## Error Severity Guide
+
+**CRITICAL: Not all errors are equal. Know which to fix immediately.**
+
+| Severity | Description | Action |
+|----------|-------------|--------|
+| **BLOCKER** | Prevents core functionality | Must fix before slinging work |
+| **WARNING** | Degraded but functional | Fix when convenient |
+| **INFO** | Advisory only | Can ignore |
+
+### BLOCKER Errors (Fix Immediately)
+
+- **Prefix mismatch** - Work won't route correctly
+- **Missing patrol molecules** - Refinery/Witness won't run
+- **Refinery not running** - Merges won't process
+- **Routes.jsonl missing entries** - Beads can't find database
+- **bd doctor critical failures** - Beads system broken
+
+### WARNING Errors (Fix Soon)
+
+- **Daemon timeout** - Falls back to direct mode (slower)
+- **Beads sync issues** - May resolve with `bd sync`
+- **Agent bead missing** - Worker may not have full context
+
+**Rule: If `gt doctor` or `bd doctor` shows BLOCKER-level errors, fix them before declaring setup complete or slinging work.**
+
 ## Table of Contents
 
 1. [Running gt doctor](#running-gt-doctor)
@@ -28,16 +54,22 @@ The user never sees raw error messages or runs commands themselves.
 
 ---
 
-## Running gt doctor
+## Running Diagnostics
 
-Your primary diagnostic tool:
+**Always run BOTH diagnostic tools:**
 
 ```bash
+# Gas Town diagnostics
 gt doctor              # Check everything
 gt doctor --fix        # Auto-fix issues
 gt doctor --verbose    # Detailed output
 gt doctor --check <name>  # Specific check
+
+# Beads diagnostics
+bd doctor              # Check beads health
 ```
+
+**Why both?** Gas Town (`gt`) manages the engine. Beads (`bd`) manages work tracking. Problems in either can break slinging.
 
 ---
 
@@ -556,7 +588,9 @@ agent is responsive, no action needed
 
 ## Prefix Mismatch Errors
 
-Prefix mismatches are one of the most common issues in multi-rig setups.
+**⚠️ BLOCKER: Prefix mismatches must be fixed before slinging work.**
+
+Prefix mismatches are one of the most common issues in multi-rig setups. They prevent work from routing correctly and will cause slinging to fail.
 
 ### Understanding Prefixes
 
